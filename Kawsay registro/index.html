@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0"/>
+  <meta name="description" content="Formulario de registro — Kawsay Lumina Global Institute S.A.S."/>
+  <meta name="robots" content="noindex, nofollow"/>
+  <!-- CSP: solo permite recursos propios + Google Fonts + SheetMonkey -->
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self';
+             script-src 'self';
+             style-src 'self' https://fonts.googleapis.com;
+             font-src https://fonts.gstatic.com;
+             connect-src https://api.sheetmonkey.io;
+             img-src 'self' data:;"/>
+  <title>Registro | Kawsay Lumina Global Institute</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/styles.css"/>
+</head>
+<body>
+
+  <!-- ===== BANNER TOP ===== -->
+  <div class="top-banner" id="topBanner">
+    🌟 Inscripciones abiertas — ¡Reserva tu cupo hoy!
+    <button class="banner-close" onclick="document.getElementById('topBanner').style.display='none'" aria-label="Cerrar">✕</button>
+  </div>
+
+  <!-- ===== HERO ===== -->
+  <header class="hero">
+    <div class="hero-bg-shapes" aria-hidden="true">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+    </div>
+    <div class="hero-content">
+      <img src="img/image.png" alt="Kawsay Lumina Global Institute" class="logo" width="140" height="140"/>
+      <h1 class="institute-name">Kawsay Lumina</h1>
+      <p class="institute-subtitle">Global Institute S.A.S.</p>
+      <p class="hero-tagline">Formación que ilumina · Conocimiento que transforma</p>
+      <div class="hero-badges">
+        <span class="badge">💛 Excelencia</span>
+        <span class="badge">🌿 Bienestar</span>
+        <span class="badge">🧠 Ciencia</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== PROGRESS BAR ===== -->
+  <div class="progress-container" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Progreso del formulario">
+    <div class="progress-bar" id="progressBar"></div>
+    <span class="progress-label" id="progressLabel">0% completado</span>
+  </div>
+
+  <!-- ===== FORM ===== -->
+  <main class="form-section">
+    <div class="form-card">
+
+      <div class="form-header">
+        <div class="gold-line"></div>
+        <h2>Formulario de Registro</h2>
+        <p>Completa los datos a continuación · Todos los campos con <span class="required">*</span> son obligatorios</p>
+        <div class="gold-line"></div>
+      </div>
+
+      <!-- Alerta de error global -->
+      <div class="alert alert-error" id="globalError" role="alert" style="display:none">
+        ⚠️ Por favor corrige los campos marcados antes de continuar.
+      </div>
+
+      <form id="registroForm" novalidate autocomplete="off" spellcheck="false">
+
+        <!-- HONEYPOT anti-bot (oculto, jamás debe llenarse) -->
+        <div class="hp-field" aria-hidden="true">
+          <label for="hp_website">Sitio web (no llenar)</label>
+          <input type="text" id="hp_website" name="hp_website" tabindex="-1" autocomplete="off"/>
+        </div>
+        <!-- Campo de tiempo para detectar bots -->
+        <input type="hidden" id="form_time" name="form_time"/>
+
+        <!-- ===== BLOQUE 1: DATOS PERSONALES ===== -->
+        <fieldset class="form-block" id="bloque-personal">
+          <legend>
+            <span class="block-num">1</span>
+            <span class="block-icon">👤</span> Datos Personales
+          </legend>
+
+          <div class="field-row two-cols">
+            <div class="field-group">
+              <label for="nombre">Nombre(s) <span class="required">*</span></label>
+              <input type="text" id="nombre" name="nombre"
+                placeholder="Ej: María Elena"
+                required minlength="2" maxlength="80"
+                autocomplete="given-name"
+                inputmode="text"
+                aria-describedby="error-nombre"/>
+              <span class="error-msg" id="error-nombre" role="alert"></span>
+            </div>
+            <div class="field-group">
+              <label for="apellido">Apellido(s) <span class="required">*</span></label>
+              <input type="text" id="apellido" name="apellido"
+                placeholder="Ej: Torres Vega"
+                required minlength="2" maxlength="80"
+                autocomplete="family-name"
+                inputmode="text"
+                aria-describedby="error-apellido"/>
+              <span class="error-msg" id="error-apellido" role="alert"></span>
+            </div>
+          </div>
+
+          <div class="field-row two-cols">
+            <div class="field-group">
+              <label for="cedula">Cédula / Documento <span class="required">*</span></label>
+              <input type="text" id="cedula" name="cedula"
+                placeholder="Ej: 0102030405"
+                required minlength="6" maxlength="15"
+                inputmode="numeric"
+                pattern="[0-9A-Za-z\-]+"
+                aria-describedby="error-cedula"/>
+              <span class="error-msg" id="error-cedula" role="alert"></span>
+            </div>
+            <div class="field-group">
+              <label for="fecha_nacimiento">Fecha de Nacimiento</label>
+              <input type="date" id="fecha_nacimiento" name="fecha_nacimiento"
+                max="" autocomplete="bday"/>
+              <!-- max="" se llenará dinámicamente en JS -->
+            </div>
+          </div>
+
+          <!-- ESPACIO EXTRA datos personales — descomenta para activar:
+          <div class="field-row">
+            <div class="field-group">
+              <label for="genero">Género</label>
+              <select id="genero" name="genero">
+                <option value="">— Selecciona —</option>
+                <option value="femenino">Femenino</option>
+                <option value="masculino">Masculino</option>
+                <option value="otro">Prefiero no decir</option>
+              </select>
+            </div>
+          </div>
+          -->
+        </fieldset>
+
+        <!-- ===== BLOQUE 2: CONTACTO ===== -->
+        <fieldset class="form-block" id="bloque-contacto">
+          <legend>
+            <span class="block-num">2</span>
+            <span class="block-icon">📬</span> Información de Contacto
+          </legend>
+
+          <div class="field-row two-cols">
+            <div class="field-group">
+              <label for="correo">Correo Electrónico <span class="required">*</span></label>
+              <input type="email" id="correo" name="correo"
+                placeholder="ejemplo@correo.com"
+                required maxlength="120"
+                autocomplete="email"
+                inputmode="email"
+                aria-describedby="error-correo"/>
+              <span class="error-msg" id="error-correo" role="alert"></span>
+            </div>
+            <div class="field-group">
+              <label for="whatsapp">WhatsApp <span class="required">*</span></label>
+              <div class="phone-input">
+               
+                <input type="tel" id="whatsapp" name="whatsapp"
+                  placeholder="0999999999"
+                  required maxlength="10"
+                  inputmode="tel"
+                  pattern="[0-9\s\-]+"
+                  aria-describedby="error-whatsapp"/>
+              </div>
+              <span class="error-msg" id="error-whatsapp" role="alert"></span>
+            </div>
+          </div>
+
+          <!-- ESPACIO EXTRA contacto:
+          <div class="field-row two-cols">
+            <div class="field-group">
+              <label for="telefono_fijo">Teléfono fijo</label>
+              <input type="tel" id="telefono_fijo" name="telefono_fijo"
+                placeholder="072xxxxxx" inputmode="tel" maxlength="15"/>
+            </div>
+            <div class="field-group">
+              <label for="correo_alt">Correo alternativo</label>
+              <input type="email" id="correo_alt" name="correo_alt"
+                placeholder="otro@correo.com" maxlength="120"/>
+            </div>
+          </div>
+          -->
+        </fieldset>
+
+        <!-- ===== BLOQUE 3: FORMACIÓN ===== -->
+        <fieldset class="form-block" id="bloque-formacion">
+          <legend>
+            <span class="block-num">3</span>
+            <span class="block-icon">🎓</span> Formación Académica
+          </legend>
+
+          <div class="field-row two-cols">
+            <div class="field-group">
+              <label for="institucion">Institución donde estudia / estudió <span class="required">*</span></label>
+              <input type="text" id="institucion" name="institucion"
+                placeholder="Ej: Universidad de Cuenca"
+                required minlength="3" maxlength="120"
+                aria-describedby="error-institucion"/>
+              <span class="error-msg" id="error-institucion" role="alert"></span>
+            </div>
+            <div class="field-group">
+              <label for="nivel_educativo">Nivel Educativo</label>
+              <select id="nivel_educativo" name="nivel_educativo">
+                <option value="">— Selecciona —</option>
+                <option value="bachillerato">Bachillerato</option>
+                <option value="tecnico">Técnico / Tecnológico</option>
+                <option value="pregrado">Pregrado (Universitario)</option>
+                <option value="posgrado">Posgrado</option>
+                <option value="otro">Otro</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field-group">
+              <label for="titulo">Título o carrera</label>
+              <input type="text" id="titulo" name="titulo"
+                placeholder="Ej: Licenciatura en Enfermería"
+                maxlength="120"/>
+            </div>
+          </div>
+
+          <!-- ESPACIO EXTRA académico:
+          <div class="field-row two-cols">
+            <div class="field-group">
+              <label for="experiencia">Años de experiencia</label>
+              <input type="number" id="experiencia" name="experiencia"
+                placeholder="Ej: 3" min="0" max="60" inputmode="numeric"/>
+            </div>
+            <div class="field-group">
+              <label for="campo_acad_extra">Especialidad</label>
+              <input type="text" id="campo_acad_extra" name="campo_acad_extra"
+                placeholder="..." maxlength="100"/>
+            </div>
+          </div>
+          -->
+        </fieldset>
+
+        <!-- ===== BLOQUE 4: CURSO ===== -->
+        <fieldset class="form-block" id="bloque-curso">
+          <legend>
+            <span class="block-num">4</span>
+            <span class="block-icon">📚</span> Inscripción al Curso
+          </legend>
+
+          <div class="field-row">
+            <div class="field-group">
+              <label for="curso">Selecciona el Curso <span class="required">*</span></label>
+              <select id="curso" name="curso" required aria-describedby="error-curso">
+                <option value="">— Selecciona un curso —</option>
+                <!-- ✏️ EDITA TUS CURSOS AQUÍ -->
+                <option value="Primeros Auxilios (basico)">Primeros Auxilios (Bàsico)</option>
+                <option value="Primeros Auxilios (Avanzado)">Primeros Auxilios (Avanzado)</option>
+                <option value="Cuidadores de Adultos Mayores">Cuidadores de Adultos Mayores</option>
+                <option value="Maternidad y Parto">Maternidad y Parto</option>
+                <option value="Escritura Acadèmica">Escritura Acadèmica</option>
+                <option value="Contabilidad Pràctica">Contabilidad Pràctica</option>
+                <option value="Administraciòn de Fàrmacos">Administraciòn de Fàrmacos</option>
+                <option value="Simulación en Salud Hospitales y Clinicas Privadas">Simulación en Salud Hospitales y Clinicas Privadas</option>
+                <option value="Simulación en Salud Poblaciòn General">Simulación en Salud Poblaciòn General</option>
+                <option value="INTENSIVO CACES">INTENSIVO CACES</option>
+                 <option value="Comunicación y Humanización en Salud">Comunicación y Humanización en Salud</option>
+
+
+
+                <!-- Agrega más:
+                <option value="curso_5">Curso 5 — ...</option>
+                -->
+              </select>
+              <span class="error-msg" id="error-curso" role="alert"></span>
+            </div>
+          </div>
+
+          <div class="field-row two-cols">
+            <div class="field-group">
+              <label for="modalidad">Modalidad</label>
+              <select id="modalidad" name="modalidad">
+                <option value="">— Selecciona —</option>
+                <option value="presencial">Presencial</option>
+                <option value="virtual">Virtual / Online</option>
+                <option value="hibrida">Híbrida</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label for="horario">Preferencia de Horario</label>
+              <select id="horario" name="horario">
+                <option value="">— Selecciona —</option>
+                <option value="manana">Mañana (07:00 – 12:00)</option>
+                <option value="tarde">Tarde (12:00 – 17:00)</option>
+                <option value="noche">Noche (17:00 – 21:00)</option>
+                <option value="fines_semana">Fines de semana</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- ESPACIO EXTRA curso:
+          <div class="field-row two-cols">
+            <div class="field-group">
+              <label for="como_entero">¿Cómo nos conoció?</label>
+              <select id="como_entero" name="como_entero">
+                <option value="">— Selecciona —</option>
+                <option value="redes">Redes Sociales</option>
+                <option value="recomendacion">Recomendación</option>
+                <option value="web">Google / Internet</option>
+                <option value="publicidad">Publicidad</option>
+                <option value="otro">Otro</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label for="codigo_promo">Código promocional</label>
+              <input type="text" id="codigo_promo" name="codigo_promo"
+                placeholder="Ej: KL2025" maxlength="30"/>
+            </div>
+          </div>
+          -->
+        </fieldset>
+
+        <!-- ===== BLOQUE 5: INFO ADICIONAL (listo para activar) ===== -->
+        <!--
+        <fieldset class="form-block" id="bloque-extra">
+          <legend>
+            <span class="block-num">5</span>
+            <span class="block-icon">📝</span> Información Adicional
+          </legend>
+
+          <div class="field-row">
+            <div class="field-group">
+              <label for="pregunta_extra_1">Pregunta 1</label>
+              <input type="text" id="pregunta_extra_1" name="pregunta_extra_1"
+                placeholder="..." maxlength="200"/>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field-group">
+              <label for="pregunta_extra_2">Pregunta 2</label>
+              <input type="text" id="pregunta_extra_2" name="pregunta_extra_2"
+                placeholder="..." maxlength="200"/>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field-group">
+              <label for="observaciones">Observaciones</label>
+              <textarea id="observaciones" name="observaciones" rows="3"
+                maxlength="600" placeholder="Escribe aquí..."></textarea>
+            </div>
+          </div>
+        </fieldset>
+        -->
+
+        <!-- ===== PIE DEL FORMULARIO ===== -->
+        <div class="form-footer">
+          <label class="checkbox-label">
+            <input type="checkbox" id="terminos" name="terminos" required/>
+            <span>Acepto el tratamiento de mis datos personales conforme a la
+              <a href="#" class="link-politica" onclick="return false">política de privacidad</a>
+              de Kawsay Lumina Global Institute S.A.S.</span>
+          </label>
+          <span class="error-msg" id="error-terminos" role="alert"></span>
+
+          <div class="submit-wrapper">
+            <button type="submit" class="btn-submit" id="btnSubmit">
+              <span class="btn-icon">✨</span>
+              <span class="btn-text">Completar mi Registro</span>
+              <span class="btn-loading" aria-hidden="true" style="display:none">
+                <span class="spinner"></span> Enviando…
+              </span>
+            </button>
+            <p class="submit-note">🔒 Tus datos están protegidos y no serán compartidos con terceros.</p>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </main>
+
+  <!-- ===== MODAL AGRADECIMIENTO ===== -->
+  <div class="modal-overlay hidden" id="modalGracias" role="dialog"
+    aria-modal="true" aria-labelledby="modalTitle" style="display:none">
+    <div class="modal-card">
+      <div class="modal-sparkles" aria-hidden="true">✨ ✨ ✨</div>
+      <div class="modal-icon">🌟</div>
+      <h2 id="modalTitle">¡Registro Exitoso!</h2>
+      <p class="modal-greeting">Gracias, <strong id="nombreRegistrado"></strong>.</p>
+      <p class="modal-message">
+        Tu inscripción ha sido recibida con éxito.<br/>
+        En <strong>Kawsay Lumina</strong> creemos en el poder del conocimiento
+        para transformar vidas. Estamos emocionados de acompañarte en este
+        hermoso camino de crecimiento y luz.
+      </p>
+      <div class="modal-info-box">
+        <p>📧 Recibirás un correo de confirmación pronto.</p>
+        <p>📱 También nos comunicaremos por WhatsApp.</p>
+      </div>
+      <div class="modal-icons-row" aria-hidden="true">
+        <span>💛</span><span>🌿</span><span>🧠</span><span>❤️</span>
+      </div>
+      <p class="modal-quote">
+        <em>"El conocimiento es la luz que guía el camino al bienestar."</em>
+      </p>
+      <button class="btn-modal-close" onclick="cerrarModal()">
+        Volver al inicio
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <img src="img/image.png" alt="Logo" class="footer-logo" width="50" height="50"/>
+      <div>
+        <p class="footer-name">Kawsay Lumina Global Institute S.A.S.</p>
+        <p>© 2025 — Todos los derechos reservados</p>
+        <p>🔒 Formulario seguro · Datos protegidos</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/form.js"></script>
+</body>
+</html>
